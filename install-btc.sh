@@ -44,8 +44,11 @@ function install_sphinx_plugin() {
   git clone https://github.com/NpoolPlatform/sphinx-plugin.git /home/sphinx-plugin
   cd /home/sphinx-plugin
   sed -i 's/sphinx_proxy_addr.*/sphinx_proxy_addr: "$SPHINX_PROXY_ADDR"/g' cmd/sphinx-plugin/SphinxPlugin.viper.yaml
+  sed -i 's/ENV_COIN_API=/ENV_COIN_API=127.0.0.1:18443/g' systemd/sphinx-plugin.service
+  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_NET=test"' systemd/sphinx-plugin.service
+  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=BTC"' systemd/sphinx-plugin.service
   cp cmd/sphinx-plugin/SphinxPlugin.viper.yaml /etc/SphinxPlugin
-  cp /home/sphinx-plugin.service /etc/systemd/system
+  cp systemd/sphinx-plugin.service /etc/systemd/system
   export GOPROXY=https://goproxy.cn
   make verify
   rm -rf /opt/sphinx-plugin/sphinx-plugin

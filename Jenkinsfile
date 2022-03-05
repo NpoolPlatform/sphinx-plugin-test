@@ -51,7 +51,8 @@ pipeline {
         expression { DEPLOY_TARGET == 'true' }
       }
       steps {
-        sh 'https://github.com/NpoolPlatform/sphinx-plugin-deployment.git /tmp/sphinx-plugin-deployment'
+        sh 'rm -rf /tmp/sphinx-plugin-deployment'
+        sh 'git clone https://github.com/NpoolPlatform/sphinx-plugin-deployment.git /tmp/sphinx-plugin-deployment'
         sh 'ansible-playbook -i /tmp/sphinx-plugin-deployment/hosts /tmp/sphinx-plugin-deployment/config.yml'
       }
     }

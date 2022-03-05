@@ -23,7 +23,6 @@ RUN cp /usr/local/go/bin/go /usr/bin/go
 RUN mkdir -p /etc/SphinxPlugin /opt/sphinx-plugin
 
 COPY ./bitcoin.conf /home
-COPY ./sphinx-plugin.service /home
 COPY ./install-btc.sh /home
 
 ENV GOBIN=/usr/bin
