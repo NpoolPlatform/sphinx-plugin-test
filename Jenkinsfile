@@ -13,6 +13,12 @@ pipeline {
       }
     }
 
+    stage('Clone deployment.') {
+      steps {
+        git(url: https://github.com/NpoolPlatform/sphinx-plugin-deployment.git, branch: '$BRANCH_NAME', changelog: true, credentialsId: 'KK-github-key', poll: true)
+      }
+    }
+
     stage('Build btc chain sphinx image') {
       when {
         expression { BUILD_TARGET == 'true' }
@@ -51,7 +57,6 @@ pipeline {
         expression { DEPLOY_TARGET == 'true' }
       }
       steps {
-        git clone https://github.com/NpoolPlatform/sphinx-plugin-deployment.git
         ansible-playbook -i sphinx-plugin-deployment/hosts sphinx-plugin-deployment/config.yml
       }
     }
