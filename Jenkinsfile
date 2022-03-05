@@ -24,7 +24,7 @@ pipeline {
             docker rmi $image -f
           done
         '''.stripIndent())
-        sh 'docker build -t entropypool/btc-chain-sphinx:22.0 .'
+        sh 'docker build -t entropypool/btc-chain-sphinx:22.0 . --build-arg=ALL_PROXY=$all_proxy'
       }
     }
 
