@@ -51,7 +51,7 @@ pipeline {
         expression { DEPLOY_TARGET == 'true' }
       }
       steps {
-        ansible-playbook -i hosts config.yml
+#        ansible-playbook -i hosts config.yml
       }
     }
 
