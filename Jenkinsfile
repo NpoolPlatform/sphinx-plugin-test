@@ -24,7 +24,7 @@ pipeline {
             docker rmi $image -f
           done
         '''.stripIndent())
-        sh 'docker build -t entropypool/btc-chain-sphinx:22.0 . --build-arg=ALL_PROXY=$all_proxy'
+        sh 'docker build -t $DOCKER_REGISTRY/entropypool/btc-chain-sphinx:22.0 . --build-arg=ALL_PROXY=$all_proxy'
       }
     }
 
@@ -36,7 +36,7 @@ pipeline {
         sh(returnStdout: true, script: '''
           set +e
           while true; do
-            docker push entropypool/btc-chain-sphinx:22.0
+            docker push $DOCKER_REGISTRY/entropypool/btc-chain-sphinx:22.0
             if [ $? -eq 0 ]; then
               break
             fi
