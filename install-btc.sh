@@ -40,6 +40,7 @@ function install_btc() {
 }
 
 function install_sphinx_plugin() {
+  mkdir -p /etc/SphinxPlugin /opt/sphinx-plugin
   rm -rf /home/sphinx-plugin
   git clone https://github.com/NpoolPlatform/sphinx-plugin.git /home/sphinx-plugin
   cd /home/sphinx-plugin

@@ -7,13 +7,13 @@ pipeline {
     go 'go'
   }
   stages {
-    stage('Clone chain sphinx') {
+    stage('Clone sphinx plugin') {
       steps {
         git(url: scm.userRemoteConfigs[0].url, branch: '$BRANCH_NAME', changelog: true, credentialsId: 'KK-github-key', poll: true)
       }
     }
 
-    stage('Build btc chain sphinx image') {
+    stage('Build sphinx plugin image') {
       when {
         expression { BUILD_TARGET == 'true' }
       }
@@ -28,7 +28,7 @@ pipeline {
       }
     }
 
-    stage('Release btc chain sphinx image') {
+    stage('Release sphinx plugin image') {
       when {
         expression { RELEASE_TARGET == 'true' }
       }

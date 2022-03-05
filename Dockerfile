@@ -7,7 +7,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
 RUN apt-get update -y
 RUN apt-get clean
 RUN apt-get update -y
-RUN apt-get install vim git make curl wget net-tools iputils-ping iproute2 sshpass -y
+RUN apt-get install vim git make curl wget htop -y
 
 ARG ALL_PROXY
 RUN apt-get install golang-go -y
@@ -19,8 +19,6 @@ RUN mv /usr/local/go/go-go1.16.7/* /usr/local/go
 RUN rm -rf /usr/local/go/go-go1.16.7
 RUN cd /usr/local/go/src; ./all.bash
 RUN cp /usr/local/go/bin/go /usr/bin/go
-
-RUN mkdir -p /etc/SphinxPlugin /opt/sphinx-plugin
 
 COPY ./bitcoin.conf /home
 COPY ./install-btc.sh /home
