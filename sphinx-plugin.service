@@ -1,0 +1,21 @@
+[Unit]
+Description=Sphinx Plugin
+After=network.target
+
+[Service]
+# FIL
+Environment="ENV_COIN_NET=test"
+Environment="ENV_COIN_TYPE=BTC"
+Environment="ENV_COIN_API=127.0.0.1:18443"
+ExecStart=/opt/sphinx-plugin/sphinx-plugin run
+ExecStop=/bin/kill -s QUIT $MAINPID
+# resource limit
+CPUQuota=200%
+MemoryMax=128M
+Restart=always
+RestartSec=30
+TimeoutSec=infinity
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
