@@ -34,8 +34,8 @@ function install_btc() {
   cp bitcoin-$BTC_VERSION/bin/bitcoind /usr/local/bin/
   cp bitcoin-$BTC_VERSION/bin/bitcoin-cli /usr/local/bin/
   bitcoind -regtest -addresstype=legacy -daemon -conf=~/.bitcoin/bitcoin.conf -rpcuser=$RPC_USER -rpcpassword=$RPC_PASSWORD
-  sed -i 's/#rpcpassword=.*/rpcpassword=$RPC_USER/g' /home/bitcoin.conf
-  sed -i 's/#rpcuser=alice/rpcuser=$RPC_PASSWORD/g' /home/bitcoin.conf
+  sed -i 's/#rpcpassword=.*/rpcpassword='$RPC_PASSWORD'/g' /home/bitcoin.conf
+  sed -i 's/#rpcuser=alice/rpcuser='$RPC_USER'/g' /home/bitcoin.conf
   cp /home/bitcoin.conf ~/.bitcoin
 }
 
@@ -44,7 +44,7 @@ function install_sphinx_plugin() {
   rm -rf /home/sphinx-plugin
   git clone https://github.com/NpoolPlatform/sphinx-plugin.git /home/sphinx-plugin
   cd /home/sphinx-plugin
-  sed -i 's/sphinx_proxy_addr.*/sphinx_proxy_addr: "$SPHINX_PROXY_ADDR"/g' cmd/sphinx-plugin/SphinxPlugin.viper.yaml
+  sed -i 's/sphinx_proxy_addr.*/sphinx_proxy_addr: "'$SPHINX_PROXY_ADDR'"/g' cmd/sphinx-plugin/SphinxPlugin.viper.yaml
   sed -i 's/ENV_COIN_API=/ENV_COIN_API=127.0.0.1:18443/g' systemd/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_NET=test"' systemd/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=BTC"' systemd/sphinx-plugin.service
