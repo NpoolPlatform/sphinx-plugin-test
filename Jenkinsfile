@@ -15,7 +15,7 @@ pipeline {
 
     stage('Clone deployment.') {
       steps {
-        git(url: https://github.com/NpoolPlatform/sphinx-plugin-deployment.git, branch: '$BRANCH_NAME', changelog: true, credentialsId: 'KK-github-key', poll: true)
+        git(url: github.com/NpoolPlatform/sphinx-plugin-deployment.git, branch: '$BRANCH_NAME', changelog: true, credentialsId: 'KK-github-key', poll: true)
       }
     }
 
