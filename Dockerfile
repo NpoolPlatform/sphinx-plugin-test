@@ -5,6 +5,8 @@ USER root
 RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
 
 RUN apt-get update -y
+RUN apt-get clean
+RUN apt-get update -y
 RUN apt-get install vim git make curl wget net-tools iputils-ping iproute2 sshpass -y
 
 ARG ALL_PROXY
