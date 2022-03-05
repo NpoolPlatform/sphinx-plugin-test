@@ -13,12 +13,6 @@ pipeline {
       }
     }
 
-    stage('Clone deployment.') {
-      steps {
-        git(url: github.com/NpoolPlatform/sphinx-plugin-deployment.git, branch: '$BRANCH_NAME', changelog: true, credentialsId: 'KK-github-key', poll: true)
-      }
-    }
-
     stage('Build btc chain sphinx image') {
       when {
         expression { BUILD_TARGET == 'true' }
