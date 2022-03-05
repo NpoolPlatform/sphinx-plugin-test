@@ -57,7 +57,7 @@ pipeline {
         expression { DEPLOY_TARGET == 'true' }
       }
       steps {
-        ansible-playbook -i sphinx-plugin-deployment/hosts sphinx-plugin-deployment/config.yml
+        ansible-playbook -i /var/lib/jenkins/workspace/sphinx-plugin-deployment/hosts /var/lib/jenkins/workspace/sphinx-plugin-deployment/config.yml
       }
     }
 
