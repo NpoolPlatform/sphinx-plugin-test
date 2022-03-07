@@ -53,6 +53,9 @@ pipeline {
       steps {
         sh 'rm -rf /tmp/sphinx-plugin-deployment'
         sh 'git clone https://github.com/NpoolPlatform/sphinx-plugin-deployment.git /tmp/sphinx-plugin-deployment'
+        sh 'sed -i \'/\'$COIN_TYPE\'/a\\$DEPLOY_IP\' /tmp/sphinx-plugin-deployment/hosts'
+        sh 'sed -i \'/user/\'$DEPLOY_USER\'/\' /tmp/sphinx-plugin-deployment/hosts'
+        sh 'sed -i \'/pass/\'$DEPLOY_PASS\'/\' /tmp/sphinx-plugin-deployment/hosts'
         sh 'sed -i \'s/rpcuser/\'$RPC_USER\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
         sh 'sed -i \'s/rpcpassword/\'$RPC_PASSWORD\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
         sh 'sed -i \'s/btcversion/\'$BTC_VERSION\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
