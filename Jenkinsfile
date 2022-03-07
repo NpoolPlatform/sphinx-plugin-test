@@ -48,12 +48,12 @@ pipeline {
 
     stage('Deploy btc sphinx plugin') {
       when {
-        expression { DEPLOY_TARGET == '' }
+        expression { DEPLOY_TARGET == 'true' }
       }
       steps {
         sh 'rm -rf /tmp/sphinx-plugin-deployment'
         sh 'git clone https://github.com/NpoolPlatform/sphinx-plugin-deployment.git /tmp/sphinx-plugin-deployment'
-        sh 'ansible-playbook -i /tmp/sphinx-plugin-deployment/hosts /tmp/sphinx-plugin-deployment/$DEPLOY_TARGET-config.yml'
+        sh 'ansible-playbook -i /tmp/sphinx-plugin-deployment/hosts /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
       }
     }
   }
