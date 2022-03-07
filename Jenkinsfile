@@ -48,7 +48,7 @@ pipeline {
 
     stage('Deploy btc sphinx plugin') {
       when {
-        expression { DEPLOY_TARGET == 'true' }
+        expression { DEPLOY_TARGET == 'btc' }
       }
       steps {
         sh 'rm -rf /tmp/sphinx-plugin-deployment'
