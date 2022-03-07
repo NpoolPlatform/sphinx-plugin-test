@@ -19,12 +19,12 @@ pipeline {
       }
       steps {
         sh(returnStdout: true, script: '''
-          images=`docker images | grep entropypool | grep btc-chain-sphinx | awk '{ print $3 }'`
+          images=`docker images | grep entropypool | grep sphinx-plugin | awk '{ print $3 }'`
           for image in $images; do
             docker rmi $image -f
           done
         '''.stripIndent())
-        sh 'docker build -t $DOCKER_REGISTRY/entropypool/btc-chain-sphinx:22.0 . --build-arg=ALL_PROXY=$all_proxy'
+        sh 'docker build -t $DOCKER_REGISTRY/entropypool/sphinx-plugin:22.0 . --build-arg=ALL_PROXY=$all_proxy'
       }
     }
 
@@ -36,7 +36,7 @@ pipeline {
         sh(returnStdout: true, script: '''
           set +e
           while true; do
-            docker push $DOCKER_REGISTRY/entropypool/btc-chain-sphinx:22.0
+            docker push $DOCKER_REGISTRY/entropypool/sphinx-plugin:22.0
             if [ $? -eq 0 ]; then
               break
             fi
@@ -46,14 +46,14 @@ pipeline {
       }
     }
 
-    stage('Deploy btc chain sphinx') {
+    stage('Deploy btc sphinx plugin') {
       when {
         expression { DEPLOY_TARGET == 'true' }
       }
       steps {
         sh 'rm -rf /tmp/sphinx-plugin-deployment'
         sh 'git clone https://github.com/NpoolPlatform/sphinx-plugin-deployment.git /tmp/sphinx-plugin-deployment'
-        sh 'ansible-playbook -i /tmp/sphinx-plugin-deployment/hosts /tmp/sphinx-plugin-deployment/config.yml'
+        sh 'ansible-playbook -i /tmp/sphinx-plugin-deployment/hosts /tmp/sphinx-plugin-deployment/btc-config.yml'
       }
     }
   }
