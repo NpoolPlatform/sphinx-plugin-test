@@ -6,22 +6,24 @@ function info() {
 
 function usage() {
   echo "Usage:"
-  echo "  $1 -[u:p:v:P:H:]"
+  echo "  $1 -[u:p:v:P:t:H:]"
   echo "    -u            Rpc user"
   echo "    -p            Rpc password"
   echo "    -v            BTC version"
   echo "    -P            Sphinx proxy addr"
+  echo "    -t            Traefik ip"
   echo "    -H            Show this help"
   [ "xtrue" == "x$2" ] && exit 0
   return 0
 }
 
-while getopts 'u:p:v:P:' OPT; do
+while getopts 'u:p:v:P:t:' OPT; do
   case $OPT in
     u) RPC_USER=$OPTARG           ;;
     p) RPC_PASSWORD=$OPTARG       ;;
     v) BTC_VERSION=$OPTARG        ;;
     P) SPHINX_PROXY_ADDR=$OPTARG  ;;
+    t) TRAEFIK_IP=$OPTARG         ;;
     *) usage $0                   ;;
   esac
 done
@@ -65,6 +67,7 @@ function install_sphinx_plugin() {
   make verify >> $LOG_FILE 2>&1
   rm -rf /opt/sphinx-plugin/sphinx-plugin
   cp output/linux/amd64/sphinx-plugin /opt/sphinx-plugin/
+  echo "$TRAEFIK_IP sphinx.proxy.api.npool.top sphinx.proxy.api.xpool.top" >> /etc/hosts
 }
 
 install_btc
