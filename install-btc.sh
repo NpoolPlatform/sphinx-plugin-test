@@ -47,7 +47,10 @@ function install_btc() {
   bitcoind -regtest -addresstype=legacy -daemon -conf=~/.bitcoin/bitcoin.conf -rpcuser=$RPC_USER -rpcpassword=$RPC_PASSWORD >> $LOG_FILE 2>&1
   sed -i 's/#rpcpassword=.*/rpcpassword='$RPC_PASSWORD'/g' /home/bitcoin.conf
   sed -i 's/#rpcuser=alice/rpcuser='$RPC_USER'/g' /home/bitcoin.conf
+  echo "rpcwallet=my_wallet" >> /home/bitcoin.conf
   cp /home/bitcoin.conf ~/.bitcoin
+  bitcoin-cli -regtest createwallet my_wallet
+  bitcoin-cli -regtest -generate 101
 }
 
 function install_sphinx_plugin() {
@@ -76,3 +79,5 @@ systemctl stop sphinx-plugin
 install_sphinx_plugin
 systemctl start sphinx-plugin
 systemctl enable sphinx-plugin
+
+while true; do bitcoin-cli -regtest -generate 1; sleep 300; done &
