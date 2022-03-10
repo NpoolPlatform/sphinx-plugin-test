@@ -81,4 +81,7 @@ systemctl enable sphinx-plugin
 
 bitcoin-cli -regtest createwallet my_wallet
 bitcoin-cli -regtest -generate 101
-while true; do bitcoin-cli -regtest -generate 1; sleep 300; done &
+while true; do
+  bitcoin-cli -regtest -generate 1
+  sleep 300
+done
