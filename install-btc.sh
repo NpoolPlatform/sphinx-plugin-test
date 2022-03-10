@@ -46,7 +46,7 @@ function install_btc() {
   cp bitcoin-$BTC_VERSION/bin/bitcoin-cli /usr/local/bin/
   bitcoind -regtest -addresstype=legacy -daemon -conf=/root/.bitcoin/bitcoin.conf -rpcuser=$RPC_USER -rpcpassword=$RPC_PASSWORD >> $LOG_FILE 2>&1
   sed -i 's/#rpcpassword=.*/rpcpassword='$RPC_PASSWORD'/g' /home/bitcoin.conf
-  sed -i 's/#rpcuser=alice/rpcuser='$RPC_USER'/g' /home/bitcoin.conf
+  sed -i 's/#rpcuser=.*/rpcuser='$RPC_USER'/g' /home/bitcoin.conf
   echo "rpcwallet=my_wallet" >> /home/bitcoin.conf
   cp /home/bitcoin.conf /root/.bitcoin
 }
