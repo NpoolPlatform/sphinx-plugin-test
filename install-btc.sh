@@ -84,4 +84,4 @@ bitcoin-cli -regtest -generate 101
 while true; do
   bitcoin-cli -regtest -generate 1
   sleep 300
-done
+done &
