@@ -76,10 +76,15 @@ function creat_btc_wallet() {
   sleep 2
   bitcoin-cli -regtest -generate 101
   sleep 5
-  while true; do
-    bitcoin-cli -regtest -generate 1
-    sleep 300
-  done
+}
+
+function run_crontab() {
+  apt install cron
+  echo "*/1 * * * * /usr/local/bin/bitcoin-cli -regtest -generate 1 > /var/log/cron.log 2>&1" > /var/spool/cron/crontabs/root
+  chmod 600 /var/spool/cron/crontabs/root
+  service cron start
+  sleep 5
+  touch /etc/default/locale
 }
 
 install_btc
@@ -91,3 +96,4 @@ systemctl start sphinx-plugin
 systemctl enable sphinx-plugin
 
 creat_btc_wallet
+run_crontab
