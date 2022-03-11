@@ -7,7 +7,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
 RUN apt-get update -y
 RUN apt-get clean
 RUN apt-get update -y
-RUN apt-get install vim git make curl wget -y --fix-missing
+RUN apt-get install vim git make curl wget --fix-missing -y
 
 ARG ALL_PROXY
 RUN apt-get install golang-go -y
