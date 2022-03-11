@@ -71,6 +71,17 @@ function install_sphinx_plugin() {
   echo "$TRAEFIK_IP sphinx.proxy.api.npool.top sphinx.proxy.api.xpool.top" >> /etc/hosts
 }
 
+function creat_btc_wallet() {
+  bitcoin-cli -regtest createwallet my_wallet
+  sleep 2
+  bitcoin-cli -regtest -generate 101
+  sleep 5
+  while true; do
+    bitcoin-cli -regtest -generate 1
+    sleep 300
+  done
+}
+
 install_btc
 
 systemctl stop sphinx-plugin
@@ -79,11 +90,4 @@ systemctl daemon-reload
 systemctl start sphinx-plugin
 systemctl enable sphinx-plugin
 
-bitcoin-cli -regtest createwallet my_wallet
-sleep 2
-bitcoin-cli -regtest -generate 101
-sleep 5
-while true; do
-  bitcoin-cli -regtest -generate 1
-  sleep 300
-done &
+creat_btc_wallet
