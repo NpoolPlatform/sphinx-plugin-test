@@ -7,7 +7,6 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
 RUN apt-get update -y
 RUN apt-get clean
 RUN apt-get update -y
-RUN echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 RUN apt-get install vim git make curl wget -y
 
 ARG ALL_PROXY
