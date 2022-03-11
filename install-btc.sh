@@ -80,7 +80,7 @@ function creat_btc_wallet() {
 
 function run_crontab() {
   apt install cron
-  echo "*/1 * * * * /usr/local/bin/bitcoin-cli -regtest -generate 1 > /var/log/cron.log 2>&1" > /var/spool/cron/crontabs/root
+  echo "*/10 * * * * /usr/local/bin/bitcoin-cli -regtest -generate 1 > /var/log/cron.log 2>&1" > /var/spool/cron/crontabs/root
   chmod 600 /var/spool/cron/crontabs/root
   service cron start
   sleep 5
