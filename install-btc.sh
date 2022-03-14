@@ -39,7 +39,8 @@ function install_btc() {
   cd /home
   rm -rf bitcoin-$BTC_VERSION
   tar xf $BTC_TAR
-  kill -9 `pgrep -f 'bitcoind'`
+#  kill -9 `pgrep -f 'bitcoind'`
+  bitcoin-cli -regtest stop
   sleep 5
   rm -rf /usr/local/bin/bitcoind /usr/local/bin/bitcoin-cli
   cp bitcoin-$BTC_VERSION/bin/bitcoind /usr/local/bin/
@@ -48,7 +49,7 @@ function install_btc() {
   sed -i 's/#rpcpassword=.*/rpcpassword='$RPC_PASSWORD'/g' /home/bitcoin.conf
   sed -i 's/#rpcuser=.*/rpcuser='$RPC_USER'/g' /home/bitcoin.conf
   echo "rpcwallet=my_wallet" >> /home/bitcoin.conf
-  cp /home/bitcoin.conf /root/.bitcoin
+  cp /home/bitcoin.conf /root/.bitcoin/
 }
 
 function install_sphinx_plugin() {
@@ -73,9 +74,9 @@ function install_sphinx_plugin() {
 
 function creat_btc_wallet() {
   bitcoin-cli -regtest createwallet my_wallet
-  sleep 2
-  bitcoin-cli -regtest -generate 101
   sleep 5
+  bitcoin-cli -regtest -generate 101
+  sleep 10
 }
 
 function run_crontab() {
