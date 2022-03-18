@@ -59,7 +59,7 @@ pipeline {
         sh 'sed -i \'s/rpcuser/\'$RPC_USER\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
         sh 'sed -i \'s/rpcpassword/\'$RPC_PASSWORD\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
         sh 'sed -i \'s/btcversion/\'$BTC_VERSION\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
-        sh 'sed -i \'s/phinxproxyapi/\'$PHINX_PROXY_API\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
+        sh 'sed -i \'s/phinxproxyapi/\'$SPHINX_PROXY_API\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
         sh 'sed -i \'s/traefikip/\'$TRAEFIK_IP\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
         sh 'ansible-playbook -i /tmp/sphinx-plugin-deployment/hosts /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
       }
