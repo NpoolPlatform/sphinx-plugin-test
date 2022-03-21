@@ -46,7 +46,7 @@ pipeline {
       }
     }
 
-    stage('Deploy btc sphinx plugin') {
+    stage('Deploy sphinx plugin') {
       when {
         expression { DEPLOY_TARGET == 'true' }
       }
