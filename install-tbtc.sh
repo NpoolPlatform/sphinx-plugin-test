@@ -28,9 +28,9 @@ while getopts 'u:p:v:P:t:' OPT; do
   esac
 done
 
-LOG_FILE=/var/log/install-btc.log
+LOG_FILE=/var/log/install-tbtc.log
 echo > $LOG_FILE
-info "RUN install btc" >> $LOG_FILE
+info "RUN install tbtc" >> $LOG_FILE
 
 function install_btc() {
   BTC_TAR=bitcoin-$BTC_VERSION-x86_64-linux-gnu.tar.gz
