@@ -21,7 +21,8 @@ RUN cd /usr/local/go/src; ./all.bash
 RUN cp /usr/local/go/bin/go /usr/bin/go
 
 COPY ./bitcoin.conf /home
-COPY ./install-btc.sh /home
+COPY ./install-tbtc.sh /home
+COPY ./install-teth.sh /home
 
 ENV GOBIN=/usr/bin
 ENV GOROOT=/usr/local/go
