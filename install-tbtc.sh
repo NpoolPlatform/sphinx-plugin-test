@@ -61,7 +61,7 @@ function install_sphinx_plugin() {
   sed -i 's/sphinx_proxy_addr.*/sphinx_proxy_addr: "'$SPHINX_PROXY_ADDR'"/g' cmd/sphinx-plugin/SphinxPlugin.viper.yaml
   sed -i 's/ENV_COIN_API=/ENV_COIN_API=127.0.0.1:18443/g' systemd/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_NET=test"' systemd/sphinx-plugin.service
-  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=BTC"' systemd/sphinx-plugin.service
+  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=bitcoin"' systemd/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_USER=$RPC_USER"' systemd/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_PASS=$RPC_PASSWORD"' systemd/sphinx-plugin.service
   cp cmd/sphinx-plugin/SphinxPlugin.viper.yaml /etc/SphinxPlugin
