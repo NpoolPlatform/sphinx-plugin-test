@@ -53,7 +53,7 @@ function install_sphinx_plugin() {
   cp output/linux/amd64/sphinx-plugin /opt/sphinx-plugin/
   cp output/linux/amd64/sphinx-plugin /usr/local/bin/
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_NET=test"' systemd/sphinx-plugin.service
-  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=ethereum,usdt"' systemd/sphinx-plugin.service
+  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=ethereum,usdt-erc20"' systemd/sphinx-plugin.service
   cp cmd/sphinx-plugin/SphinxPlugin.viper.yaml /etc/SphinxPlugin/
   cp systemd/sphinx-plugin.service /etc/systemd/system/
   echo "$TRAEFIK_IP sphinx.proxy.api.npool.top sphinx.proxy.api.xpool.top" >> /etc/hosts
