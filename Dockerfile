@@ -29,5 +29,3 @@ COPY ./install-ethereum.sh /home
 ENV GOBIN=/usr/bin
 ENV GOROOT=/usr/local/go
 ENV GOTOOLDIR=/usr/lib/go/pkg/tool/linux_amd64
-ENV all_proxy=$ALL_PROXY
-
