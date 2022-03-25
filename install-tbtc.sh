@@ -1,4 +1,5 @@
 #!/bin/bash
+export all_proxy=$ALL_PROXY
 
 function info() {
   echo "  <I> -> $1 ~"
@@ -6,7 +7,8 @@ function info() {
 
 function usage() {
   echo "Usage:"
-  echo "  $1 -[u:p:v:P:t:H:]"
+  echo "  $1 -[a:u:p:v:P:t:H:]"
+  echo "    -a            All proxy"
   echo "    -u            Rpc user"
   echo "    -p            Rpc password"
   echo "    -v            BTC version"
@@ -17,8 +19,9 @@ function usage() {
   return 0
 }
 
-while getopts 'u:p:v:P:t:' OPT; do
+while getopts 'a:u:p:v:P:t:' OPT; do
   case $OPT in
+    a) ALL_PROXY=$OPTARG          ;;
     u) RPC_USER=$OPTARG           ;;
     p) RPC_PASSWORD=$OPTARG       ;;
     v) BTC_VERSION=$OPTARG        ;;
@@ -35,11 +38,10 @@ info "RUN install tbtc" >> $LOG_FILE
 function install_btc() {
   BTC_TAR=bitcoin-$BTC_VERSION-x86_64-linux-gnu.tar.gz
   info "download $BTC_TAR" >> $LOG_FILE
-  curl -o /home/$BTC_TAR https://bitcoin.org/bin/bitcoin-core-$BTC_VERSION/$BTC_TAR >> $LOG_FILE 2>&1
+  all_proxy=$ALL_PROXY curl -o /home/$BTC_TAR https://bitcoin.org/bin/bitcoin-core-$BTC_VERSION/$BTC_TAR >> $LOG_FILE 2>&1
   cd /home
   rm -rf bitcoin-$BTC_VERSION
   tar xf $BTC_TAR
-#  kill -9 `pgrep -f 'bitcoind'`
   bitcoin-cli -regtest stop
   sleep 5
   rm -rf /usr/local/bin/bitcoind /usr/local/bin/bitcoin-cli
@@ -56,7 +58,7 @@ function install_sphinx_plugin() {
   mkdir -p /etc/SphinxPlugin /opt/sphinx-plugin
   rm -rf /home/sphinx-plugin
   info "clone sphinx-plugin" >> $LOG_FILE
-  git clone https://github.com/NpoolPlatform/sphinx-plugin.git /home/sphinx-plugin >> $LOG_FILE 2>&1
+  all_proxy=$ALL_PROXY git clone https://github.com/NpoolPlatform/sphinx-plugin.git /home/sphinx-plugin >> $LOG_FILE 2>&1
   cd /home/sphinx-plugin
   sed -i 's/sphinx_proxy_addr.*/sphinx_proxy_addr: "'$SPHINX_PROXY_ADDR'"/g' cmd/sphinx-plugin/SphinxPlugin.viper.yaml
   sed -i 's/ENV_COIN_API=/ENV_COIN_API=127.0.0.1:18443/g' systemd/sphinx-plugin.service
@@ -68,7 +70,7 @@ function install_sphinx_plugin() {
   cp systemd/sphinx-plugin.service /etc/systemd/system
   export GOPROXY=https://goproxy.cn
   info "make verify" >> $LOG_FILE
-  make verify >> $LOG_FILE 2>&1
+  all_proxy=$ALL_PROXY make verify >> $LOG_FILE 2>&1
   rm -rf /opt/sphinx-plugin/sphinx-plugin
   cp output/linux/amd64/sphinx-plugin /opt/sphinx-plugin/
   echo "$TRAEFIK_IP sphinx.proxy.api.npool.top sphinx.proxy.api.xpool.top" >> /etc/hosts
