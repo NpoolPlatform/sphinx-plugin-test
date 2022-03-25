@@ -39,7 +39,7 @@ function install_eth() {
   sleep 10
   cd /home
   info "run geth" >> $LOG_FILE
-  nohup geth --http  --datadir /root/.ethereum/node0 --dev --dev.period 1 --mine --miner.threads 2 --http.api 'eth,net,web3,miner,personal'> /root/.ethereum/geth.log 2>&1 &
+  nohup geth --http  --datadir /root/.ethereum --dev --dev.period 1 --mine --miner.threads 2 --http.api 'eth,net,web3,miner,personal'> /root/.ethereum/geth.log 2>&1 &
 }
 
 function install_sphinx_plugin() {
