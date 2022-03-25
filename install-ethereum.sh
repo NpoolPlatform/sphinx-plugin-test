@@ -36,7 +36,7 @@ function install_eth() {
   sleep 10
   cd /home
   info "run geth" >> $LOG_FILE
-#   nohup geth --http --miner.etherbase 0x6730E255049DE3e55fd3BDc291B8f872c2E4A072 > /home/geth.log 2>&1 &
+#   nohup geth --http --miner.etherbase 0x6730E255049DE3e55fd3BDc291B8f872c2E4A072 > /root/.ethereum/geth.log 2>&1 &
 }
 
 
