@@ -39,7 +39,7 @@ function install_eth() {
   sleep 10
   cd /home
   info "run geth" >> $LOG_FILE
-  nohup geth --http --dev --dev.period 1 --mine --miner.threads 2 --http.api 'eth,net,web3,miner,personal'> /root/.ethereum/geth.log 2>&1 &
+  nohup geth --http  --datadir /root/.ethereum/node0 --dev --dev.period 1 --mine --miner.threads 2 --http.api 'eth,net,web3,miner,personal'> /root/.ethereum/geth.log 2>&1 &
 }
 
 function install_sphinx_plugin() {
@@ -79,8 +79,9 @@ systemctl daemon-reload
 systemctl start sphinx-plugin
 systemctl enable sphinx-plugin
 
+touch -f /root/.ethereum/contractid
 ContractID=`cat /root/.ethereum/contractid`
-if [ -n $ContractID ]; then
+if [ -n "$ContractID" ]; then
   sed -i 's/contract_id.*/contract_id: "'$ContractID'"/g' /etc/SphinxPlugin/SphinxPlugin.viper.yaml
 else
   install_usdt
