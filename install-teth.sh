@@ -58,6 +58,7 @@ function install_sphinx_plugin() {
   sed -i 's/ENV_COIN_API=/ENV_COIN_API=127.0.0.1:8545/g' systemd/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_NET=test"' systemd/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=ethereum,usdterc20"' systemd/sphinx-plugin.service
+  sed -i 's/sphinx_proxy_addr.*/sphinx_proxy_addr: "'$SPHINX_PROXY_ADDR'"/g' cmd/sphinx-plugin/SphinxPlugin.viper.yaml
   cp cmd/sphinx-plugin/SphinxPlugin.viper.yaml /etc/SphinxPlugin/
   cp systemd/sphinx-plugin.service /etc/systemd/system/
   echo "$TRAEFIK_IP sphinx.proxy.api.npool.top sphinx.proxy.api.xpool.top" >> /etc/hosts
@@ -66,8 +67,8 @@ function install_sphinx_plugin() {
 function install_usdt() {
   ContractID=`sphinx-plugin usdterc20 -addr 127.0.0.1 -port 8545 | grep "Contract:" | awk '{print $4}'`
   info "ContractID = $ContractID" >> $LOG_FILE
+  echo "$ContractID" > /root/.ethereum/contractid
   sed -i 's/contract_id.*/contract_id: "'$ContractID'"/g' /etc/SphinxPlugin/SphinxPlugin.viper.yaml
-  sed -i 's/sphinx_proxy_addr.*/sphinx_proxy_addr: "'$SPHINX_PROXY_ADDR'"/g' /etc/SphinxPlugin/SphinxPlugin.viper.yaml
 }
 
 install_eth
@@ -78,5 +79,11 @@ systemctl daemon-reload
 systemctl start sphinx-plugin
 systemctl enable sphinx-plugin
 
-install_usdt
+ContractID=`cat /root/.ethereum/contractid`
+if [ -n $ContractID ]; then
+  sed -i 's/contract_id.*/contract_id: "'$ContractID'"/g' /etc/SphinxPlugin/SphinxPlugin.viper.yaml
+else
+  install_usdt
+fi
+
 systemctl restart sphinx-plugin
