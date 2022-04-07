@@ -24,7 +24,7 @@ COPY ./bitcoin.conf /home
 COPY ./install-tbtc.sh /home
 COPY ./install-teth.sh /home
 COPY ./install-bitcoin.sh /home
-COPY ./install-ethereum.sh /home
+COPY ./install-ethereum-sphinx-plugin.sh /home
 COPY ./install-usdterc20.sh /home
 
 ENV GOBIN=/usr/bin
