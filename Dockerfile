@@ -25,6 +25,7 @@ COPY ./install-tbtc.sh /home
 COPY ./install-teth.sh /home
 COPY ./install-bitcoin.sh /home
 COPY ./install-ethereum.sh /home
+COPY ./install-usdterc20.sh /home
 
 ENV GOBIN=/usr/bin
 ENV GOROOT=/usr/local/go
