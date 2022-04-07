@@ -51,28 +51,19 @@ pipeline {
         expression { DEPLOY_TARGET == 'true' }
       }
       steps {
-        sh(returnStdout: true, script: '''
-          set +e
-          netstat -lntup | grep $RPC_ENDPOINT
-          if [ $? -eq 0 ]; then
-            rm -rf /tmp/sphinx-plugin-deployment
-            git clone https://github.com/NpoolPlatform/sphinx-plugin-deployment.git /tmp/sphinx-plugin-deployment
-            sed -i \'/\'$COIN_TYPE\'/a\\\'$DEPLOY_IP\'\' /tmp/sphinx-plugin-deployment/hosts
-            sed -i \'s/=user/=\'$DEPLOY_USER\'/g\' /tmp/sphinx-plugin-deployment/hosts
-            sed -i \'s/=pass/=\'$DEPLOY_PASS\'/g\' /tmp/sphinx-plugin-deployment/hosts
-            sed -i \'s/rpcuser/\'$RPC_USER\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml
-            sed -i \'s/rpcpassword/\'$RPC_PASSWORD\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml
-            sed -i \'s/btcversion/\'$BTC_VERSION\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml
-            sed -i \'s/sphinxproxyapi/\'$SPHINX_PROXY_API\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml
-            sed -i \'s/traefikip/\'$TRAEFIK_IP\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml
-            sed -i \'s#hostip#\'$DEPLOY_IP\'#g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml
-            sed -i \'s#allproxy#\'$all_proxy\'#g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml
-            ansible-playbook -i /tmp/sphinx-plugin-deployment/hosts /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml
-          else
-            echo "install eth ~~~"
-          fi
-          set -e
-        '''.stripIndent())
+        sh 'rm -rf /tmp/sphinx-plugin-deployment'
+        sh 'git clone https://github.com/NpoolPlatform/sphinx-plugin-deployment.git /tmp/sphinx-plugin-deployment'
+        sh 'sed -i \'/\'$COIN_TYPE\'/a\\\'$DEPLOY_IP\'\' /tmp/sphinx-plugin-deployment/hosts'
+        sh 'sed -i \'s/=user/=\'$DEPLOY_USER\'/g\' /tmp/sphinx-plugin-deployment/hosts'
+        sh 'sed -i \'s/=pass/=\'$DEPLOY_PASS\'/g\' /tmp/sphinx-plugin-deployment/hosts'
+        sh 'sed -i \'s/rpcuser/\'$RPC_USER\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
+        sh 'sed -i \'s/rpcpassword/\'$RPC_PASSWORD\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
+        sh 'sed -i \'s/btcversion/\'$BTC_VERSION\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
+        sh 'sed -i \'s/sphinxproxyapi/\'$SPHINX_PROXY_API\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
+        sh 'sed -i \'s/traefikip/\'$TRAEFIK_IP\'/g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
+        sh 'sed -i \'s#hostip#\'$DEPLOY_IP\'#g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
+        sh 'sed -i \'s#allproxy#\'$all_proxy\'#g\' /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
+        sh 'ansible-playbook -i /tmp/sphinx-plugin-deployment/hosts /tmp/sphinx-plugin-deployment/$COIN_TYPE-config.yml'
       }
     }
   }
