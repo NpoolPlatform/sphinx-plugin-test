@@ -7,22 +7,24 @@ function info() {
 
 function usage() {
   echo "Usage:"
-  echo "  $1 -[a:P:t:H:I:]"
+  echo "  $1 -[a:P:t:H:I:N:]"
   echo "    -a            All proxy"
   echo "    -P            Sphinx proxy addr"
   echo "    -t            Traefik ip"
   echo "    -I            Host ip"
+  echo "    -N            Coin net"
   echo "    -H            Show this help"
   [ "xtrue" == "x$2" ] && exit 0
   return 0
 }
 
-while getopts 'a:P:t:I:' OPT; do
+while getopts 'a:P:t:I:N:' OPT; do
   case $OPT in
     a) ALL_PROXY=$OPTARG          ;;
     P) SPHINX_PROXY_ADDR=$OPTARG  ;;
     t) TRAEFIK_IP=$OPTARG         ;;
     I) HOST_IP=$OPTARG            ;;
+    N) COIN_NET=$OPTARG           ;;
     *) usage $0                   ;;
   esac
 done
@@ -30,20 +32,6 @@ done
 LOG_FILE=/var/log/install-sphinx-plugin.log
 echo > $LOG_FILE
 info "RUN install sphinx plugin" >> $LOG_FILE
-
-function install_eth() {
-  apt install software-properties-common -y
-  apt-get update
-  add-apt-repository -y ppa:ethereum/ethereum
-  apt-get update
-  info "install ethereum" >> $LOG_FILE
-  apt-get install ethereum -y >> $LOG_FILE 2>&1
-  sleep 10
-  cd /home
-  info "run geth" >> $LOG_FILE
-  nohup geth --http > /root/.ethereum/geth.log 2>&1 &
-}
-
 
 function install_sphinx_plugin() {
   mkdir -p /etc/SphinxPlugin /opt/sphinx-plugin
@@ -61,14 +49,17 @@ function install_sphinx_plugin() {
   cp cmd/sphinx-plugin/SphinxPlugin.viper.yaml /etc/SphinxPlugin/
   cp systemd/sphinx-plugin.service /etc/systemd/system/
   sed -i 's/ENV_COIN_API=/ENV_COIN_API='$HOST_IP':8545/g' /etc/systemd/system/sphinx-plugin.service
-  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_NET=main"' /etc/systemd/system/sphinx-plugin.service
-  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=ethereum"' /etc/systemd/system/sphinx-plugin.service
+  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_NET='$COIN_NET'"' /etc/systemd/system/sphinx-plugin.service
+  if [ "$COIN_NET" == "main" ]; then
+    sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=ethereum"' /etc/systemd/system/sphinx-plugin.service
+  else
+    sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=tethereum"' /etc/systemd/system/sphinx-plugin.service
+    echo "$TRAEFIK_IP sphinx.proxy.api.npool.top sphinx.proxy.api.xpool.top" >> /etc/hosts
+  fi
   sed -i 's/sphinx_proxy_addr.*/sphinx_proxy_addr: "'$SPHINX_PROXY_ADDR'"/g' /etc/SphinxPlugin/SphinxPlugin.viper.yaml
 }
 
-# install_eth
 
-# echo "$TRAEFIK_IP sphinx.proxy.api.npool.top sphinx.proxy.api.xpool.top" >> /etc/hosts
 systemctl stop sphinx-plugin
 install_sphinx_plugin
 systemctl daemon-reload
