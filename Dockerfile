@@ -26,6 +26,7 @@ COPY ./install-teth.sh /home
 COPY ./install-bitcoin.sh /home
 COPY ./install-ethereum-sphinx-plugin.sh /home
 COPY ./install-usdterc20.sh /home
+COPY ./install-filecoin-sphinx-plugin.sh /home
 
 ENV GOBIN=/usr/bin
 ENV GOROOT=/usr/local/go

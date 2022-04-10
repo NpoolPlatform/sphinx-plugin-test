@@ -61,6 +61,8 @@ pipeline {
         sh 'sed -i \'s/btcversion/\'$BTC_VERSION\'/g\' /tmp/sphinx-plugin-deployment/deploy/cluster/$COIN_TYPE-config.yml'
         sh 'sed -i \'s/sphinxproxyapi/\'$SPHINX_PROXY_API\'/g\' /tmp/sphinx-plugin-deployment/deploy/cluster/$COIN_TYPE-config.yml'
         sh 'sed -i \'s/traefikip/\'$TRAEFIK_IP\'/g\' /tmp/sphinx-plugin-deployment/deploy/cluster/$COIN_TYPE-config.yml'
+        sh 'sed -i \'s#coinnet#\'$COIN_NET\'#g\' /tmp/sphinx-plugin-deployment/deploy/cluster/$COIN_TYPE-config.yml'
+        sh 'sed -i \'s#cointoken#\'$COIN_TOKEN\'#g\' /tmp/sphinx-plugin-deployment/deploy/cluster/$COIN_TYPE-config.yml'
         sh 'sed -i \'s#hostip#\'$DEPLOY_IP\'#g\' /tmp/sphinx-plugin-deployment/deploy/cluster/$COIN_TYPE-config.yml'
         sh 'sed -i \'s#allproxy#\'$all_proxy\'#g\' /tmp/sphinx-plugin-deployment/deploy/cluster/$COIN_TYPE-config.yml'
         sh 'sed -i \'s#datadir#\'$DATADIR\'#g\' /tmp/sphinx-plugin-deployment/deploy/cluster/$COIN_TYPE-config.yml'
