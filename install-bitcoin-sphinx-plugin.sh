@@ -19,7 +19,7 @@ function usage() {
   return 0
 }
 
-while getopts 'a:u:p:v:P:t:N:' OPT; do
+while getopts 'a:u:p:v:P:t:N:I:' OPT; do
   case $OPT in
     a) ALL_PROXY=$OPTARG          ;;
     u) RPC_USER=$OPTARG           ;;
@@ -28,6 +28,7 @@ while getopts 'a:u:p:v:P:t:N:' OPT; do
     P) SPHINX_PROXY_ADDR=$OPTARG  ;;
     t) TRAEFIK_IP=$OPTARG         ;;
     N) COIN_NET=$OPTARG           ;;
+    I) HOST_IP=$OPTARG            ;;
     *) usage $0                   ;;
   esac
 done
@@ -64,7 +65,6 @@ function install_sphinx_plugin() {
   fi
 }
 
-systemctl stop sphinx-plugin
 install_sphinx_plugin
 systemctl daemon-reload
 systemctl start sphinx-plugin
