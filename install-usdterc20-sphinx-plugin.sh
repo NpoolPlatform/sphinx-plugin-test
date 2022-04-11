@@ -60,6 +60,13 @@ function install_sphinx_plugin() {
 }
 
 function install_usdt() {
+  apt install software-properties-common -y
+  apt-get update
+  add-apt-repository -y ppa:ethereum/ethereum
+  apt-get update
+  info "install ethereum" >> $LOG_FILE
+  apt-get install ethereum -y >> $LOG_FILE 2>&1
+  sleep 10
   ContractID=`sphinx-plugin usdterc20 -addr $HOST_IP -port 8545 | grep "Contract:" | awk '{print $4}'`
   info "ContractID = $ContractID" >> $LOG_FILE
   echo "$ContractID" > /root/.ethereum/contractid
