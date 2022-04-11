@@ -20,6 +20,7 @@ RUN rm -rf /usr/local/go/go-go1.17.8
 RUN cd /usr/local/go/src; ./all.bash
 RUN cp /usr/local/go/bin/go /usr/bin/go
 
+COPY ./bitcoin.conf /home
 COPY ./install-bitcoin-sphinx-plugin.sh /home
 COPY ./install-ethereum-sphinx-plugin.sh /home
 COPY ./install-usdterc20-sphinx-plugin.sh /home
