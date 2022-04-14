@@ -53,10 +53,8 @@ function install_sphinx_plugin() {
   sed -i 's/ENV_COIN_API=/ENV_COIN_API='$HOST_IP':1234/g' /etc/systemd/system/sphinx-plugin.service
   sed -i 's/ENV_COIN_TOKEN=/ENV_COIN_TOKEN='$COIN_TOKEN'/g' /etc/systemd/system/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_NET='$COIN_NET'"' /etc/systemd/system/sphinx-plugin.service
-  if [ "$COIN_NET" == "main" ]; then
-    sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=filecoin"' /etc/systemd/system/sphinx-plugin.service
-  else
-    sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=tfilecoin"' /etc/systemd/system/sphinx-plugin.service
+  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=filecoin"' /etc/systemd/system/sphinx-plugin.service
+  if [ "$COIN_NET" == "test" ]; then
     echo "$TRAEFIK_IP sphinx.proxy.api.npool.top sphinx.proxy.api.xpool.top" >> /etc/hosts
   fi
   sed -i 's/sphinx_proxy_addr.*/sphinx_proxy_addr: "'$SPHINX_PROXY_ADDR'"/g' /etc/SphinxPlugin/SphinxPlugin.viper.yaml

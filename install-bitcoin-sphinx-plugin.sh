@@ -55,12 +55,11 @@ function install_sphinx_plugin() {
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_NET='$COIN_NET'"' /etc/systemd/system/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_USER='$RPC_USER'"' /etc/systemd/system/sphinx-plugin.service
   sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_PASS='$RPC_PASSWORD'"' /etc/systemd/system/sphinx-plugin.service
+  sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=bitcoin"' /etc/systemd/system/sphinx-plugin.service
   if [ "$COIN_NET" == "main" ]; then
     sed -i 's/ENV_COIN_API=/ENV_COIN_API='$HOST_IP':8332/g' /etc/systemd/system/sphinx-plugin.service
-    sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=bitcoin"' /etc/systemd/system/sphinx-plugin.service
   else
     sed -i 's/ENV_COIN_API=/ENV_COIN_API='$HOST_IP':18443/g' /etc/systemd/system/sphinx-plugin.service
-    sed -i '/ENV_COIN_API=/a\Environment="ENV_COIN_TYPE=tbitcoin"' /etc/systemd/system/sphinx-plugin.service
     echo "$TRAEFIK_IP sphinx.proxy.api.npool.top sphinx.proxy.api.xpool.top" >> /etc/hosts
   fi
 }
